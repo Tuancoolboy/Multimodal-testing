@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Assignment 1 | Multimodal Report</title>
+    <meta name="description" content="Multimodal report in red theme: problem, dataset, methods, experiments, results, analysis, and conclusion.">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+      .theme-red {
+        --primary: #d64545;
+        --primary-deep: #a92e2e;
+        --accent: #d64545;
+        --accent-soft: rgba(214, 69, 69, 0.15);
+      }
+
+      .theme-red .button-primary {
+        background: linear-gradient(135deg, #d64545, #ff5f5f);
+        border-color: rgba(214, 69, 69, 0.7);
+      }
+
+      .theme-red .button-secondary,
+      .theme-red .chip,
+      .theme-red .status-pill,
+      .theme-red .report-nav a,
+      .theme-red .panel,
+      .theme-red .meta-item,
+      .theme-red .kpi-card,
+      .theme-red .report-card,
+      .theme-red .deliverable-card,
+      .theme-red .footer-card,
+      .theme-red .page-callout {
+        border-color: rgba(214, 69, 69, 0.45);
+        background: rgba(214, 69, 69, 0.1);
+      }
+
+      .theme-red .report-nav a:hover,
+      .theme-red .report-nav a:focus-visible,
+      .theme-red .button-secondary:hover,
+      .theme-red .button-secondary:focus-visible {
+        border-color: rgba(214, 69, 69, 0.75);
+        background: rgba(214, 69, 69, 0.2);
+      }
+
+      .theme-red .brand-mark::before {
+        background: linear-gradient(135deg, #d64545, #ff5f5f);
+      }
+
+      .theme-red .compare-table thead th {
+        background: rgba(214, 69, 69, 0.22);
+      }
+
+      .theme-red .hero-card h1 {
+        font-size: clamp(2.9rem, 5.2vw, 4.4rem);
+        line-height: 1.05;
+      }
+
+      .theme-red .hero-card .page-subtitle {
+        font-size: 1.35rem;
+        line-height: 1.45;
+      }
+
+      .theme-red .hero-card .meta-label,
+      .theme-red .page-callout .meta-label {
+        font-size: 1.02rem;
+      }
+
+      .theme-red .hero-card .meta-value {
+        font-size: 1.55rem;
+        line-height: 1.2;
+        font-weight: 750;
+      }
+
+      .theme-red .page-callout .meta-value {
+        font-size: 1.62rem;
+        line-height: 1.2;
+        font-weight: 800;
+        word-break: break-word;
+      }
+
+      .theme-red .page-callout .meta-item {
+        padding: 0.85rem 0.95rem;
+        min-height: unset;
+      }
+
+      .theme-red .page-callout .card-kicker {
+        font-size: 1.15rem;
+      }
+
+      .theme-red .page-callout .card-title {
+        font-size: 2rem;
+      }
+
+      .theme-red .page-callout .deliverable-note,
+      .theme-red .page-callout .mini-list li {
+        font-size: 1.26rem;
+        line-height: 1.45;
+      }
+
+      .theme-red .page-callout .status-pill,
+      .theme-red .page-callout .chip {
+        font-size: 1.02rem;
+      }
+    </style>
+  </head>
+  <body class="theme-red">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="./index.html" aria-label="Back to Assignment 1 overview">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-copy">
+            <p class="brand-label">Assignment 1 · Multimodal</p>
+            <p class="brand-note">Red theme · ViT-B/16 priority with RN50 extension</p>
+          </span>
+        </a>
+
+        <nav class="topnav" aria-label="Primary">
+          <a href="../index.html">Home</a>
+          <a href="./index.html">Assignment 1</a>
+          <a href="./image.html">Image</a>
+          <a href="./text.html">Text</a>
+          <a href="#multi-conclusion">Conclusion</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="shell page-hero section" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.25rem; align-items: stretch;">
+        <article class="panel hero-card">
+          <p class="eyebrow">Multimodal classification</p>
+          <h1>Zero-shot vs Few-shot on <span>Image + Text</span></h1>
+          <p class="page-subtitle">
+            This report is written in the required order: problem → dataset → method → experiments → results → analysis → conclusion.
+            The primary focus is <strong>ViT-B/16</strong>, with additional <strong>ResNet50</strong> comparison in augmentation and no-augmentation settings.
+          </p>
+
+          <div class="button-row">
+            <a class="button button-primary" href="#multi-outline">Open section outline</a>
+            <a class="button button-secondary" href="./index.html">Back to Assignment 1 overview</a>
+          </div>
+
+          <div class="hero-meta">
+            <div class="meta-item"><p class="meta-label">Owner</p><p class="meta-value">Vu Hai Tuan</p></div>
+            <div class="meta-item"><p class="meta-label">Instructor</p><p class="meta-value">Le Thanh Sach</p></div>
+            <div class="meta-item"><p class="meta-label">Primary model</p><p class="meta-value">ViT-B/16</p></div>
+            <div class="meta-item"><p class="meta-label">Extension model</p><p class="meta-value">ResNet50</p></div>
+          </div>
+        </article>
+
+        <aside class="panel page-callout" style="display: flex; flex-direction: column; justify-content: center; gap: 0.9rem;">
+          <p class="card-kicker">Process summary</p>
+          <h2 class="card-title" style="margin-bottom: 0.25rem;">Multimodal workflow overview</h2>
+          <p class="deliverable-note" style="margin-bottom: 0.35rem;">
+            This block summarizes the implementation flow: use <strong>CLIP ViT-B/16</strong> as the main backbone,
+            compare <strong>Zero-shot vs Few-shot</strong>, analyze <strong>Augmentation vs No-augmentation</strong>,
+            and report <strong>RN50-based few-shot</strong> as an extension under the same evaluation protocol.
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem;">
+            <article class="meta-item" style="margin: 0;">
+              <p class="meta-label">Base model</p>
+              <p class="meta-value">CLIP ViT-B/16</p>
+            </article>
+            <article class="meta-item" style="margin: 0;">
+              <p class="meta-label">Extension model</p>
+              <p class="meta-value">CLIP RN50</p>
+            </article>
+            <article class="meta-item" style="margin: 0;">
+              <p class="meta-label">Zero-shot Accuracy</p>
+              <p class="meta-value">89.59%</p>
+            </article>
+            <article class="meta-item" style="margin: 0;">
+              <p class="meta-label">10-shot Accuracy</p>
+              <p class="meta-value">92.24%</p>
+            </article>
+          </div>
+
+          <div class="assignment-meta" style="margin-top: 0.35rem; gap: 0.35rem;">
+            <span class="status-pill">Zero-shot</span>
+            <span class="chip">Few-shot</span>
+            <span class="chip">Aug vs No-aug</span>
+            <span class="chip">ViT-B/16</span>
+            <span class="chip" style="margin-left: 0.2rem;">RN50 Extension</span>
+          </div>
+        </aside>
+      </section>
+
+      <section id="multi-outline" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title"> Multimodal Classification</h2>
+            <p class="section-copy">Follow these steps</p>
+          </div>
+        </div>
+
+        <div class="report-nav">
+          <a href="#multi-problem">Problem Definition</a>
+          <a href="#multi-dataset">Dataset & EDA</a>
+          <a href="#multi-preprocess">Dataset, DataLoader & Augmentation</a>
+          <a href="#multi-clip-parent">CLIP Backbone</a>
+          <a href="#multi-zero-shot">Zero-shot</a>
+          <a href="#multi-few-shot">Few-shot</a>
+          <a href="#multi-setup">Experimental Setup</a>
+          <a href="#multi-results">Results</a>
+          <a href="#multi-discussion">Discussion</a>
+          <a href="#multi-extension-rn50">Augmentation vs No-Augmentation Across Backbones</a>
+          <a href="#multi-conclusion">Conclusion</a>
+        </div>
+      </section>
+
+      <section id="multi-problem" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Problem Definition</h2>
+            <p class="section-copy">
+              Multimodal classification with paired image-text inputs, comparing zero-shot and few-shot on the main CLIP ViT-B/16 and CLIP RN-50 extension backbone.
+            </p>
+          </div>
+        </div>
+
+        <article class="panel report-card content-card">
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">Problem statement</p>
+              <h3 class="card-title">CLIP ViT-B/16: zero-shot vs few-shot</h3>
+              <p class="track-copy">
+                The task is multimodal classification where each sample contains a paired image and text.
+                We compare <strong>zero-shot</strong> and <strong>few-shot</strong> under the same protocol, with
+                <strong>CLIP ViT-B/16</strong> as the main backbone and <strong>CLIP RN50</strong> as an extension.
+              </p>
+              <ul class="mini-list">
+                <li>Main backbone: CLIP ViT-B/16</li>
+                <li>Extension backbone: CLIP RN50</li>
+                <li>Metrics: Accuracy, Precision, and F1-score</li>
+              </ul>
+            </section>
+
+            <section class="story-block">
+              <p class="card-kicker">Dataset summary</p>
+              <h3 class="card-title">Why UPMC-Food101 fits this assignment</h3>
+              <ul class="mono-list">
+                <li>True image-text pairs from the same recipe/page</li>
+                <li>About 100,000 samples</li>
+                <li>101 original classes (10-class subset in this report)</li>
+                <li>Web-collected variability for realistic evaluation</li>
+              </ul>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <section id="multi-dataset" class="shell section">
+        <div class="section-head"><div><h2 class="section-title">Dataset Description and EDA</h2></div></div>
+        <article class="panel report-card content-card">
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">Dataset summary</p>
+              <ul class="mini-list">
+                <li>Uses genuine image-text pairs (same entity/event), not random pairing.</li>
+                <li>Supports train/validation/test and class-wise few-shot sampling.</li>
+                <li>Suitable for zero-shot and few-shot evaluation protocols.</li>
+              </ul>
+            </section>
+            <section class="story-block">
+              <p class="card-kicker">EDA checklist</p>
+              <ul class="mini-list">
+                <li>Class distribution across train/val/test.</li>
+                <li>Example samples showing correct image-text alignment.</li>
+                <li>Text length statistics (mean/median/percentiles).</li>
+                <li>Class imbalance notes for per-class analysis.</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="soft-divider"></div>
+
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">EDA</p>
+              <h3 class="card-title">Train/Val/Test statistics and class set</h3>
+              <ul class="mini-list">
+                <li><strong>Classes (10):</strong> donuts, french_fries, hamburger, hot_dog, ice_cream, pho, pizza, steak, sushi, tacos</li>
+                <li><strong>Train titles:</strong> 67,988</li>
+                <li><strong>Test titles:</strong> 22,716</li>
+                <li><strong>Train images:</strong> 6,866 (missing titles: 0)</li>
+                <li><strong>Test images:</strong> 2,295 (missing titles: 0)</li>
+                <li><strong>Final split:</strong> train 6,179 · val 687 · test 2,295</li>
+              </ul>
+            </section>
+
+            <section class="story-block">
+              <p class="card-kicker">10-class subset</p>
+              <h3 class="card-title">UPMC-Food101 categories used in the multimodal task</h3>
+              <div class="chip-cloud">
+                <span class="chip">donuts</span>
+                <span class="chip">french_fries</span>
+                <span class="chip">hamburger</span>
+                <span class="chip">hot_dog</span>
+                <span class="chip">ice_cream</span>
+                <span class="chip">pho</span>
+                <span class="chip">pizza</span>
+                <span class="chip">steak</span>
+                <span class="chip">sushi</span>
+                <span class="chip">tacos</span>
+              </div>
+              <p class="deliverable-note" style="margin-top: 0.8rem;">
+                <span aria-hidden="true">🔗</span>
+                Dataset link:
+                <a href="https://www.kaggle.com/datasets/gianmarco96/upmcfood101/data" target="_blank" rel="noreferrer">
+                  UPMC-Food101 on Kaggle
+                </a>
+              </p>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <section id="multi-preprocess" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Dataset, DataLoader, and Augmentation Setup</h2>
+            <p class="section-copy">
+              The preprocessing pipeline follows the implementation in the ViT-B/16 notebook, with explicit
+              image transforms, text mapping from CSV files, and reproducible split/DataLoader setup.
+            </p>
+          </div>
+        </div>
+        <article class="panel report-card content-card">
+          <div class="story-grid story-grid-triple">
+            <section class="story-block">
+              <p class="card-kicker">Image preprocessing</p>
+              <ul class="mini-list">
+                <li>CLIP normalization is used with fixed mean/std for all runs.</li>
+                <li><strong>no_aug:</strong> baseline transform pipeline (resize + normalize).</li>
+                <li><strong>aug:</strong> RandomResizedCrop(224), RandomHorizontalFlip, and ColorJitter before normalization.</li>
+                <li>Validation/Test always use fixed transform (no random augmentation).</li>
+              </ul>
+            </section>
+            <section class="story-block">
+              <p class="card-kicker">Text preprocessing</p>
+              <ul class="mini-list">
+                <li>Text is loaded from <code>train_titles.csv</code> and <code>test_titles.csv</code>.</li>
+                <li>Each image filename is mapped to its paired title to keep true image-text alignment.</li>
+                <li>If a title is missing, fallback text is created: <code>a photo of &lt;class&gt;</code>.</li>
+                <li>Labels are encoded with <code>label2id</code> / <code>id2label</code> for consistent training and evaluation.</li>
+              </ul>
+            </section>
+            <section class="story-block">
+              <p class="card-kicker">Split and DataLoader</p>
+              <ul class="mini-list">
+                <li>Dataset is downloaded, unzipped, and loaded from fixed train/test directories.</li>
+                <li>Train is split into train/val with <strong>VAL_RATIO = 0.1</strong>, <strong>random_state = 42</strong>, and stratified labels.</li>
+                <li><code>MultimodalDataset</code> returns <code>(image, text, label)</code> for each sample.</li>
+                <li>DataLoaders use batch size 64, shuffle in train only, and fixed evaluation loaders for val/test.</li>
+              </ul>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <section id="multi-clip-parent" class="shell section">
+        <div class="section-head"><div><h2 class="section-title">CLIP-Core Backbone</h2></div></div>
+        <article class="panel report-card content-card">
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">Core model</p>
+              <h3 class="card-title">What is CLIP?</h3>
+              <p class="track-copy">
+                CLIP (Contrastive Language-Image Pretraining) learns aligned visual and textual representations
+                from large-scale image-text pairs in a shared embedding space. This enables image-text similarity
+                matching and strong prompt-based zero-shot classification without task-specific training.
+              </p>
+              <ul class="mini-list">
+                <li>Learns from large-scale paired image-text data rather than relying only on task-specific fixed class labels</li>
+                <li>Uses natural-language prompts for zero-shot classification</li>
+                <li>Serves as the pretrained backbone for both zero-shot and few-shot experiments</li>
+              </ul>
+            </section>
+
+            <section class="story-block">
+              <p class="card-kicker">Architecture overview</p>
+              <h3 class="card-title">Image encoder + Text encoder + similarity matching</h3>
+              <div class="figure-frame" style="margin-top: 0.5rem;">
+                <img src="../assets/assignment-1/CLIP.png" alt="CLIP architecture for multimodal image-text learning" style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;">
+              </div>
+              <p class="deliverable-note" style="margin-top: 0.7rem;">
+                CLIP matches strong vision baselines in zero-shot settings and serves as the parent model in this report.
+              </p>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <section id="multi-zero-shot" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Zero-shot Classification</h2>
+          </div>
+        </div>
+      
+        <article class="panel report-card content-card">
+          <ul class="mini-list">
+            <li>We use pretrained <strong>CLIP ViT-B/16</strong> and <strong>CLIP RN50</strong> as the zero-shot baselines.</li>
+            <li>Each class label is converted into a natural-language text prompt.</li>
+            <li>For each test sample, the <strong>image</strong> and its <strong>paired text</strong> are encoded into the shared CLIP embedding space.</li>
+            <li>The image and text embeddings are fused to form a multimodal representation.</li>
+            <li>Cosine similarity is computed between the fused sample representation and the class prompt embeddings, and the highest-scoring class is selected.</li>
+            <li><strong>Advantage:</strong> no task-specific training is required.</li>
+            <li><strong>Limitation:</strong> performance is sensitive to prompt design, fusion strategy, and domain mismatch.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section id="multi-few-shot" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Few-shot Adaptation</h2>
+          </div>
+        </div>
+      
+        <article class="panel report-card content-card">
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">Few-shot setup</p>
+              <ul class="mini-list">
+                <li>Few-shot adaptation is built on pretrained <strong>CLIP ViT-B/16</strong> and <strong>CLIP RN50</strong> backbones.</li>
+                <li>We evaluate low-data settings with labeled support samples in <strong>5-shot</strong> and <strong>10-shot</strong> configurations.</li>
+                <li>Two lightweight adaptation strategies are compared: a <strong>Linear classifier</strong> and a <strong>Prototype-based classifier</strong>.</li>
+                <li>Both <strong>no_aug</strong> and <strong>aug</strong> settings are evaluated under the same protocol.</li>
+              </ul>
+            </section>
+      
+            <section class="story-block">
+              <p class="card-kicker">Fusion / adaptation note</p>
+              <ul class="mini-list">
+                <li>In this implementation, few-shot adaptation uses <strong>both image and paired text embeddings</strong> extracted from CLIP.</li>
+                <li>The image and text features are concatenated to form a <strong>multimodal representation</strong>.</li>
+                <li>Let <strong>f_img(x)</strong> be the image embedding and <strong>f_txt(t)</strong> be the text embedding.</li>
+                <li>The fused multimodal feature is defined as <strong>z = [f_img(x) ; f_txt(t)]</strong>.</li>
+              </ul>
+            </section>
+          </div>
+      
+          <div class="soft-divider"></div>
+      
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">Method 1</p>
+              <h3 class="card-title">Linear Classifier</h3>
+              <ul class="mini-list">
+                <li>The fused feature <strong>z</strong> is fed into a trainable linear classifier.</li>
+                <li>Logits are computed as <strong>o = Wz + b</strong>.</li>
+                <li>Class probabilities are obtained by <strong>p(y|x,t) = softmax(Wz + b)</strong>.</li>
+                <li>The model is trained with cross-entropy loss: <strong>L = -log p(y = y_true | x,t)</strong>.</li>
+                <li>In this setting, CLIP encoders are frozen and only the lightweight classifier head is trained.</li>
+              </ul>
+            </section>
+      
+            <section class="story-block">
+              <p class="card-kicker">Method 2</p>
+              <h3 class="card-title">Prototype-based Classifier</h3>
+              <ul class="mini-list">
+                <li>For each class <strong>c</strong>, a prototype is computed from the support set.</li>
+                <li>The class prototype is defined as <strong>p_c = (1 / K) &sum; z_i</strong>, where <strong>z_i</strong> are fused support features from class <strong>c</strong>.</li>
+                <li>For a query sample, prediction is based on similarity between <strong>z</strong> and each class prototype <strong>p_c</strong>.</li>
+                <li>A common decision rule is <strong>ŷ = argmax cos(z, p_c)</strong>.</li>
+                <li>This method does not require learning a large classifier head and is effective in low-shot settings.</li>
+              </ul>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <section id="multi-setup" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Experimental Setup</h2>
+            <p class="section-copy">
+              This section describes the implementation and evaluation protocol used for zero-shot and few-shot multimodal classification.
+            </p>
+          </div>
+        </div>
+      
+        <article class="panel report-card content-card">
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">Implementation setting</p>
+              <ul class="mini-list">
+                <li>The experiments are implemented in <strong>PyTorch</strong> using pretrained <strong>CLIP ViT-B/16</strong> and <strong>CLIP RN50</strong> backbones.</li>
+                <li>All experiments are conducted in a <strong>multimodal</strong> setting, where each sample contains an image, its paired text, and a class label.</li>
+                <li>A fixed random seed (<strong>seed = 42</strong>) is used for reproducible few-shot sampling.</li>
+                <li>The same train, validation, and test protocol is applied across all compared settings for a fair evaluation.</li>
+              </ul>
+            </section>
+      
+            <section class="story-block">
+              <p class="card-kicker">Zero-shot protocol</p>
+              <ul class="mini-list">
+                <li>For zero-shot classification, each class name is converted into a prompt of the form <strong>"a photo of &lt;class&gt;"</strong>.</li>
+                <li>Class prompt embeddings are computed once using the CLIP text encoder.</li>
+                <li>For each test sample, the image and its paired text are separately encoded and normalized.</li>
+                <li>The two embeddings are fused by averaging: <strong>z = (f_img + f_txt) / 2</strong>, followed by L2 normalization.</li>
+                <li>Prediction is obtained by comparing the fused sample feature with class prompt embeddings using scaled cosine similarity.</li>
+              </ul>
+            </section>
+          </div>
+      
+          <div class="soft-divider"></div>
+      
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">Few-shot protocol</p>
+              <ul class="mini-list">
+                <li>Few-shot support sets are constructed with <strong>class-wise K-shot sampling</strong>, where exactly <strong>K</strong> samples are selected per class.</li>
+                <li>We evaluate <strong>5-shot</strong> and <strong>10-shot</strong> settings under both <strong>no_aug</strong> and <strong>aug</strong> image pipelines.</li>
+                <li>In the linear few-shot model, CLIP encoders are <strong>frozen</strong> and only a lightweight classifier head is trained.</li>
+                <li>Image and text embeddings are normalized and concatenated to form the multimodal feature: <strong>z = [f_img ; f_txt]</strong>.</li>
+                <li>The classifier head is defined as a linear layer on top of the fused feature representation.</li>
+              </ul>
+            </section>
+      
+            <section class="story-block">
+              <p class="card-kicker">Prototype setting and evaluation</p>
+              <ul class="mini-list">
+                <li>In the prototype-based setting, class prototypes are computed from the few-shot support set using fused multimodal features.</li>
+                <li>For each class, the prototype is obtained by averaging support features of that class, and prediction is based on similarity to the query feature.</li>
+                <li>Validation data is used to monitor the few-shot setting, while final results are reported on the held-out test set.</li>
+                <li>The main reported metrics are <strong>Accuracy</strong> and <strong>Weighted F1-score</strong>; <strong>Precision</strong> can also be included in the comparison table for consistency.</li>
+                <li>This setup allows a fair comparison between <strong>zero-shot</strong> and <strong>few-shot</strong> multimodal classification under limited labeled data.</li>
+              </ul>
+            </section>
+          </div>
+      
+          <div class="compare-table-wrap" style="margin-top: 1rem;">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Setting group</th>
+                  <th>Compared configurations</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Zero-shot</td>
+                  <td>CLIP ViT-B/16, CLIP RN50</td>
+                </tr>
+                <tr>
+                  <td>Few-shot (no_aug)</td>
+                  <td>5-shot no_aug, 10-shot no_aug</td>
+                </tr>
+                <tr>
+                  <td>Few-shot (aug)</td>
+                  <td>5-shot aug, 10-shot aug</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="multi-results" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Results</h2>
+            <p class="section-copy">
+              The results are reported separately for the two CLIP backbones: <strong>ViT-B/16</strong> as the main model and <strong>RN50</strong> as the extension model.
+            </p>
+          </div>
+        </div>
+      
+        <article class="panel report-card content-card">
+          <p class="card-kicker">Main model</p>
+          <h3 class="card-title">CLIP ViT-B/16</h3>
+      
+          <p class="deliverable-note" style="margin-bottom: 0.9rem;">
+            For the ViT-B/16 backbone, we report one <strong>zero-shot baseline</strong> and two few-shot adaptation strategies:
+            <strong>Linear classifier</strong> and <strong>Prototype-based classifier</strong>.
+          </p>
+      
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Head</th>
+                  <th>Setting</th>
+                  <th>Shot</th>
+                  <th>Accuracy</th>
+                  <th>Precision</th>
+                  <th>F1</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Zero-shot</td><td>Prompt matching</td><td>zero_shot</td><td>0</td><td>0.8959</td><td>0.8981</td><td>0.8769</td></tr>
+      
+                <tr><td>Few-shot</td><td>Linear</td><td>no_aug</td><td>5</td><td>0.8501</td><td>0.8604</td><td>0.8419</td></tr>
+                <tr><td>Few-shot</td><td>Prototype</td><td>no_aug</td><td>5</td><td>0.8837</td><td>0.8944</td><td>0.8855</td></tr>
+      
+                <tr><td>Few-shot</td><td>Linear</td><td>no_aug</td><td>10</td><td>0.9163</td><td>0.9169</td><td>0.9131</td></tr>
+                <tr><td>Few-shot</td><td>Prototype</td><td>no_aug</td><td>10</td><td>0.9207</td><td>0.9263</td><td>0.9218</td></tr>
+      
+                <tr><td>Few-shot</td><td>Linear</td><td>aug</td><td>5</td><td>0.8044</td><td>0.8380</td><td>0.7840</td></tr>
+                <tr><td>Few-shot</td><td>Prototype</td><td>aug</td><td>5</td><td>0.8806</td><td>0.8907</td><td>0.8824</td></tr>
+      
+                <tr><td>Few-shot</td><td>Linear</td><td>aug</td><td>10</td><td>0.9190</td><td>0.9204</td><td>0.9159</td></tr>
+                <tr><td>Few-shot</td><td>Prototype</td><td>aug</td><td>10</td><td>0.9224</td><td>0.9262</td><td>0.9231</td></tr>
+              </tbody>
+            </table>
+          </div>
+      
+          <div class="figure-frame" style="margin-top: 1rem;">
+            <img
+              src="../assets/assignment-1/accuracy.png"
+              alt="Zero-shot vs Few-shot results for CLIP ViT-B/16 with Linear and Prototype heads"
+              style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+            >
+          </div>
+      
+          <ul class="mini-list" style="margin-top: 1rem;">
+            <li><strong>Zero-shot</strong> already provides a strong baseline on ViT-B/16 with Accuracy = <strong>0.8959</strong> and F1 = <strong>0.8769</strong>.</li>
+            <li>At <strong>5-shot</strong>, the <strong>Linear head</strong> remains below the zero-shot baseline in both <strong>no_aug</strong> and <strong>aug</strong> settings, while the <strong>Prototype head</strong> stays much closer to the zero-shot result.</li>
+            <li>Increasing the support set from <strong>5-shot</strong> to <strong>10-shot</strong> consistently improves both heads, and all <strong>10-shot</strong> variants outperform the zero-shot baseline in Accuracy and F1.</li>
+            <li>The <strong>Prototype head</strong> consistently outperforms the <strong>Linear head</strong> across all few-shot settings, showing better robustness in both low-shot and augmented conditions.</li>
+            <li>For the <strong>Linear head</strong>, the best result is <strong>10-shot + aug</strong> with Accuracy = <strong>0.9190</strong>, Precision = <strong>0.9204</strong>, and F1 = <strong>0.9159</strong>, slightly better than <strong>10-shot + no_aug</strong>.</li>
+            <li>The best overall ViT-B/16 result is <strong>Prototype + 10-shot + aug</strong>, with Accuracy = <strong>0.9224</strong>, Precision = <strong>0.9262</strong>, and F1 = <strong>0.9231</strong>.</li>
+            <li>Augmentation is not beneficial for the <strong>Linear head</strong> at <strong>5-shot</strong>, but becomes slightly helpful at <strong>10-shot</strong>. In contrast, the <strong>Prototype head</strong> remains strong and stable in both <strong>no_aug</strong> and <strong>aug</strong> settings.</li>
+          </ul>
+      
+          <div class="soft-divider"></div>
+
+<p class="card-kicker">Extension model</p>
+<h3 class="card-title">CLIP RN50</h3>
+
+<div class="compare-table-wrap">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Head</th>
+        <th>Setting</th>
+        <th>Shot</th>
+        <th>Accuracy</th>
+        <th>Precision</th>
+        <th>F1</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Zero-shot</td><td>Prompt matching</td><td>zero_shot</td><td>0</td><td>0.8680</td><td>0.8996</td><td>0.8438</td></tr>
+
+      <tr><td>Few-shot</td><td>Linear</td><td>no_aug</td><td>5</td><td>0.8039</td><td>0.8330</td><td>0.8058</td></tr>
+      <tr><td>Few-shot</td><td>Prototype</td><td>no_aug</td><td>5</td><td>0.8806</td><td>0.8919</td><td>0.8825</td></tr>
+
+      <tr><td>Few-shot</td><td>Linear</td><td>no_aug</td><td>10</td><td>0.8514</td><td>0.8548</td><td>0.8489</td></tr>
+      <tr><td>Few-shot</td><td>Prototype</td><td>no_aug</td><td>10</td><td>0.8540</td><td>0.8727</td><td>0.8574</td></tr>
+
+      <tr><td>Few-shot</td><td>Linear</td><td>aug</td><td>5</td><td>0.8410</td><td>0.8504</td><td>0.8362</td></tr>
+      <tr><td>Few-shot</td><td>Prototype</td><td>aug</td><td>5</td><td>0.7917</td><td>0.8128</td><td>0.7943</td></tr>
+
+      <tr><td>Few-shot</td><td>Linear</td><td>aug</td><td>10</td><td>0.8784</td><td>0.8793</td><td>0.8774</td></tr>
+      <tr><td>Few-shot</td><td>Prototype</td><td>aug</td><td>10</td><td>0.8571</td><td>0.8751</td><td>0.8607</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="figure-frame" style="margin-top: 1rem;">
+  <img
+    src="../assets/assignment-1/method.png"
+    alt="Zero-shot vs Few-shot results for CLIP RN50"
+    style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+  >
+</div>
+
+<ul class="mini-list" style="margin-top: 1rem;">
+  <li><strong>RN50 zero-shot</strong> provides a strong baseline with Accuracy = <strong>0.8680</strong> and F1 = <strong>0.8438</strong>.</li>
+  <li>The best RN50 result is <strong>Prototype + 5-shot + no_aug</strong>, which achieves Accuracy = <strong>0.8806</strong>, Precision = <strong>0.8919</strong>, and F1 = <strong>0.8825</strong>, slightly outperforming the zero-shot baseline in Accuracy and F1.</li>
+  <li>Unlike ViT-B/16, RN50 does <strong>not</strong> show a consistent improvement when moving from <strong>5-shot</strong> to <strong>10-shot</strong>; the effect depends on the classifier head and augmentation setting.</li>
+  <li>For the <strong>Linear head</strong>, augmentation is beneficial in both shot settings, improving performance from <strong>0.8039 → 0.8410</strong> at 5-shot and from <strong>0.8514 → 0.8784</strong> at 10-shot.</li>
+  <li>For the <strong>Prototype head</strong>, augmentation is harmful at <strong>5-shot</strong> but slightly helpful at <strong>10-shot</strong>, indicating less stable behavior under low-shot augmentation.</li>
+  <li>Overall, RN50 is more sensitive to the adaptation setting than ViT-B/16, with the strongest RN50 performance obtained from the <strong>Prototype head in the 5-shot no_aug setting</strong>.</li>
+</ul>
+        </article>
+      </section>
+      <section id="multi-discussion" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Discussion and Error Analysis</h2>
+            <p class="section-copy">
+              This section interprets the quantitative results using learning curves, calibration analysis, and confusion matrices for both ViT-B/16 and RN50.
+            </p>
+          </div>
+        </div>
+      
+        <article class="panel report-card content-card">
+          <div class="story-grid">
+            <section class="story-block">
+              <p class="card-kicker">ViT-B/16 discussion</p>
+              <h3 class="card-title">Strong few-shot gains, but head behavior differs</h3>
+              <ul class="mini-list">
+                <li><strong>Zero-shot ViT-B/16</strong> is already a strong baseline with Accuracy = <strong>0.8959</strong> and F1 = <strong>0.8769</strong>, showing that pretrained CLIP alignment transfers well to the multimodal food classification task.</li>
+                <li>Moving from <strong>5-shot</strong> to <strong>10-shot</strong> clearly improves performance for both heads, confirming that a small increase in labeled support data is enough to improve class separation.</li>
+                <li>The <strong>Prototype head</strong> is consistently more stable than the <strong>Linear head</strong>, especially in low-shot settings. The best overall ViT-B/16 result is <strong>Prototype + 10-shot + aug</strong> with Accuracy = <strong>0.9224</strong>, Precision = <strong>0.9262</strong>, and F1 = <strong>0.9231</strong>.</li>
+                <li>For the <strong>Linear head</strong>, augmentation is not helpful at <strong>5-shot</strong>, but becomes beneficial at <strong>10-shot</strong>. This suggests that stronger variation is useful only when the support set is large enough to stabilize the classifier.</li>
+              </ul>
+            </section>
+      
+            <section class="story-block">
+              <p class="card-kicker">RN50 discussion</p>
+              <h3 class="card-title">More sensitive to setting and less consistent than ViT-B/16</h3>
+              <ul class="mini-list">
+                <li><strong>RN50 zero-shot</strong> is also competitive with Accuracy = <strong>0.8680</strong> and F1 = <strong>0.8438</strong>, but it remains below the ViT-B/16 baseline.</li>
+                <li>Unlike ViT-B/16, RN50 does <strong>not</strong> improve consistently from <strong>5-shot</strong> to <strong>10-shot</strong>. Its behavior depends strongly on the classifier head and whether augmentation is applied.</li>
+                <li>The best RN50 setting is <strong>Prototype + 5-shot + no_aug</strong> with Accuracy = <strong>0.8806</strong> and F1 = <strong>0.8825</strong>, slightly outperforming RN50 zero-shot.</li>
+                <li>For RN50, augmentation helps the <strong>Linear head</strong> in both shot settings, but it hurts the <strong>Prototype head</strong> at <strong>5-shot</strong>. This indicates that RN50 is more sensitive to support-set quality and transformation noise than ViT-B/16.</li>
+              </ul>
+            </section>
+          </div>
+      
+          <div class="soft-divider"></div>
+      
+          <section class="story-block">
+            <p class="card-kicker">Learning dynamics</p>
+            <h3 class="card-title">Training curves and head comparison</h3>
+      
+            <div class="figure-frame" style="margin-top: 0.75rem;">
+              <img
+                src="../assets/assignment-1/val-loss-Vit16.png"
+                alt="10-shot few-shot summary for ViT-B/16 including training loss, validation accuracy, and head comparison"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+            <p class="deliverable-note" style="margin-top: 0.7rem;">
+              For <strong>ViT-B/16</strong>, the training-loss curves decrease smoothly and validation accuracy quickly saturates, indicating stable convergence for the 10-shot linear setting. The final comparison also shows that the <strong>Prototype head</strong> slightly outperforms the <strong>Linear head</strong> in both <strong>no_aug</strong> and <strong>aug</strong> settings.
+            </p>
+      
+            <div class="figure-frame" style="margin-top: 1rem;">
+              <img
+                src="../assets/assignment-1/val_loss_resnet50.png"
+                alt="10-shot few-shot summary for RN50 including training loss, validation accuracy, and head comparison"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+            <p class="deliverable-note" style="margin-top: 0.7rem;">
+              For <strong>RN50</strong>, optimization is also stable, but the final ranking is less consistent across settings. This supports the observation that RN50 is more sensitive to the adaptation strategy and augmentation pipeline than ViT-B/16.
+            </p>
+          </section>
+      
+          <div class="soft-divider"></div>
+      
+          <section class="story-block">
+            <p class="card-kicker">Calibration analysis</p>
+            <h3 class="card-title">Prototype is reliable; Linear is under-confident</h3>
+      
+            <div class="figure-frame" style="margin-top: 0.75rem;">
+              <img
+                src="../assets/assignment-1/ECE-vit16.png"
+                alt="Calibration summary for ViT-B/16 comparing Zero-shot, 10-shot Linear, and 10-shot Prototype"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+      
+            <div class="figure-frame" style="margin-top: 1rem;">
+              <img
+                src="../assets/assignment-1/Ece_con_vit16.png"
+                alt="Reliability diagrams for ViT-B/16 comparing Zero-shot, 10-shot Linear, and 10-shot Prototype"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+      
+            <p class="deliverable-note" style="margin-top: 0.7rem;">
+              For <strong>ViT-B/16</strong>, both <strong>Zero-shot</strong> and <strong>10-shot aug Prototype</strong> are well calibrated, with low ECE values (around <strong>0.0284</strong> and <strong>0.0232</strong>). In contrast, the <strong>10-shot aug Linear</strong> model has a very large calibration error (<strong>ECE ≈ 0.6441</strong>), meaning that it often predicts the correct class but assigns poorly calibrated confidence scores.
+            </p>
+      
+            <div class="figure-frame" style="margin-top: 1rem;">
+              <img
+                src="../assets/assignment-1/ECE_resnet50.png"
+                alt="Calibration summary for RN50 comparing Zero-shot, 10-shot Linear, and 10-shot Prototype"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+      
+            <div class="figure-frame" style="margin-top: 1rem;">
+              <img
+                src="../assets/assignment-1/confidence_resnet50.png"
+                alt="Reliability diagrams for RN50 comparing Zero-shot, 10-shot Linear, and 10-shot Prototype"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+      
+            <p class="deliverable-note" style="margin-top: 0.7rem;">
+              The same pattern appears for <strong>RN50</strong>: <strong>Zero-shot</strong> and <strong>Prototype</strong> remain reasonably calibrated, while the <strong>Linear</strong> model has a much larger ECE. The <strong>Confidently Correct</strong> scores also show that the linear models rarely produce highly confident predictions even when they are correct.
+            </p>
+          </section>
+      
+          <div class="soft-divider"></div>
+      
+          <section class="story-block">
+            <p class="card-kicker">Error analysis from confusion matrices</p>
+            <h3 class="card-title">Hard classes are visually similar fast-food categories</h3>
+      
+            <div class="figure-frame" style="margin-top: 0.75rem;">
+              <img
+                src="../assets/assignment-1/confused_vit16.png"
+                alt="Confusion matrix comparison for ViT-B/16 between Zero-shot, 10-shot Linear, and 10-shot Prototype"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+      
+            <p class="deliverable-note" style="margin-top: 0.7rem;">
+              For <strong>ViT-B/16</strong>, the main source of error is the <strong>hot_dog</strong> class, which is often confused with visually similar categories such as <strong>hamburger</strong>, <strong>pizza</strong>, and <strong>steak</strong>. The <strong>10-shot aug Prototype</strong> model reduces these confusions more effectively than the linear head.
+            </p>
+      
+            <div class="figure-frame" style="margin-top: 1rem;">
+              <img
+                src="../assets/assignment-1/confused_matrix_resnet50.png"
+                alt="Confusion matrix comparison for RN50 between Zero-shot, 10-shot Linear, and 10-shot Prototype"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+      
+            <p class="deliverable-note" style="margin-top: 0.7rem;">
+              For <strong>RN50</strong>, few-shot adaptation improves several classes over zero-shot, but visually similar food items remain a major source of confusion. This is especially visible when augmentation is applied under low-shot conditions.
+            </p>
+      
+            <ul class="mini-list" style="margin-top: 0.9rem;">
+              <li>Classes such as <strong>ice_cream</strong>, <strong>pizza</strong>, and <strong>sushi</strong> are consistently easier, with strong diagonal values across most settings.</li>
+              <li>Overall, the error analysis supports the main result: <strong>Prototype-based few-shot adaptation is more robust than the Linear head</strong>, especially when class similarity is high and labeled data is limited.</li>
+            </ul>
+          </section>
+      
+          <div class="soft-divider"></div>
+      
+          <section class="story-block">
+            <p class="card-kicker">Main takeaway</p>
+            <h3 class="card-title">What the evaluation tells us</h3>
+            <ul class="mini-list">
+              <li><strong>ViT-B/16</strong> is the stronger and more stable backbone overall.</li>
+              <li><strong>Prototype heads</strong> provide the best balance between accuracy, robustness, and calibration.</li>
+              <li><strong>Linear heads</strong> can reach competitive accuracy, but their confidence estimates are unreliable and should be interpreted carefully.</li>
+              <li>The main remaining challenge is distinguishing <strong>fine-grained, visually similar food categories</strong>, especially under low-shot conditions.</li>
+            </ul>
+          </section>
+        </article>
+      </section>
+
+      <section id="multi-extension-rn50" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Augmentation vs No-Augmentation Across Backbones</h2>
+            <p class="section-copy">
+              Since the RN50 results have already been reported above, this section focuses on how data augmentation changes performance for both <strong>ViT-B/16</strong> and <strong>RN50</strong> under the same few-shot settings.
+            </p>
+          </div>
+        </div>
+      
+        <article class="panel report-card content-card">
+          <section class="story-block">
+            <p class="card-kicker">Main backbone</p>
+            <h3 class="card-title">ViT-B/16: augmentation helps only when support size is large enough</h3>
+      
+            <div class="figure-frame" style="margin-top: 0.75rem;">
+              <img
+                src="../assets/assignment-1/accuracy.png"
+                alt="ViT-B/16 comparison of zero-shot, no-augmentation, and augmentation settings"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+      
+            <ul class="mini-list" style="margin-top: 0.9rem;">
+              <li>For <strong>ViT-B/16 Linear</strong>, augmentation is harmful at <strong>5-shot</strong>, where Accuracy drops from <strong>0.8501</strong> (<strong>no_aug</strong>) to <strong>0.8044</strong> (<strong>aug</strong>), and F1 drops from <strong>0.8419</strong> to <strong>0.7840</strong>.</li>
+              <li>However, for <strong>ViT-B/16 Linear</strong> at <strong>10-shot</strong>, augmentation becomes slightly beneficial: Accuracy improves from <strong>0.9163</strong> to <strong>0.9190</strong>, and F1 improves from <strong>0.9131</strong> to <strong>0.9159</strong>.</li>
+              <li>For <strong>ViT-B/16 Prototype</strong>, augmentation has only a small effect. At <strong>5-shot</strong>, it slightly lowers Accuracy from <strong>0.8837</strong> to <strong>0.8806</strong>, while at <strong>10-shot</strong> it slightly improves Accuracy from <strong>0.9207</strong> to <strong>0.9224</strong>.</li>
+              <li>This suggests that for <strong>ViT-B/16</strong>, augmentation is <strong>not universally helpful</strong>. It becomes more useful when the support set is larger, especially for the <strong>Linear head</strong>, while the <strong>Prototype head</strong> is already robust even without heavy augmentation.</li>
+            </ul>
+          </section>
+      
+          <div class="soft-divider"></div>
+      
+          <section class="story-block">
+            <p class="card-kicker">Extension backbone</p>
+            <h3 class="card-title">RN50: augmentation helps Linear, but is unstable for Prototype</h3>
+      
+            <div class="figure-frame" style="margin-top: 0.75rem;">
+              <img
+                src="../assets/assignment-1/method.png"
+                alt="RN50 comparison of zero-shot, no-augmentation, and augmentation settings"
+                style="width: 100%; height: auto; border-radius: var(--radius-md); display: block;"
+              >
+            </div>
+      
+            <ul class="mini-list" style="margin-top: 0.9rem;">
+              <li>For <strong>RN50 Linear</strong>, augmentation is consistently beneficial. At <strong>5-shot</strong>, Accuracy increases from <strong>0.8039</strong> to <strong>0.8410</strong>, and at <strong>10-shot</strong>, it increases from <strong>0.8514</strong> to <strong>0.8784</strong>.</li>
+              <li>For <strong>RN50 Prototype</strong>, augmentation is harmful at <strong>5-shot</strong>, where Accuracy drops sharply from <strong>0.8806</strong> to <strong>0.7917</strong>. At <strong>10-shot</strong>, augmentation gives only a very small gain, from <strong>0.8540</strong> to <strong>0.8571</strong>.</li>
+              <li>This means that for <strong>RN50</strong>, augmentation interacts strongly with the classifier head. It clearly supports the <strong>Linear head</strong>, but it is unstable for the <strong>Prototype head</strong>, especially when the support set is very small.</li>
+              <li>Compared with <strong>ViT-B/16</strong>, RN50 shows higher sensitivity to the training setting, which indicates that the effect of augmentation depends not only on shot size but also on the backbone architecture itself.</li>
+            </ul>
+          </section>
+      
+          <div class="soft-divider"></div>
+      
+          <section class="story-block">
+            <p class="card-kicker">Cross-backbone takeaway</p>
+            <h3 class="card-title">Data augmentation is backbone- and head-dependent</h3>
+            <ul class="mini-list">
+              <li>For <strong>ViT-B/16</strong>, augmentation is most useful in the <strong>10-shot</strong> setting and gives only small gains because the pretrained features are already strong and stable.</li>
+              <li>For <strong>RN50</strong>, augmentation is much more important for the <strong>Linear head</strong>, but less reliable for the <strong>Prototype head</strong>.</li>
+              <li>Therefore, augmentation should <strong>not</strong> be treated as a universally positive choice. Its effectiveness depends on the combination of <strong>backbone</strong>, <strong>classifier head</strong>, and <strong>support-set size</strong>.</li>
+            </ul>
+          </section>
+        </article>
+      </section>
+      
+      <section id="multi-conclusion" class="shell section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Conclusion</h2>
+          </div>
+        </div>
+      
+        <article class="panel deliverable-card content-card">
+          <ul class="mini-list">
+            <li>Based on the reported <strong>accuracy</strong> and <strong>F1</strong> scores, <strong>CLIP ViT-B/16</strong> is the stronger backbone overall. Its best result is <strong>Prototype + 10-shot + aug</strong> with Accuracy = <strong>0.9224</strong> and F1 = <strong>0.9231</strong>, which is clearly higher than the best RN50 result.</li>
+            <li>For <strong>ViT-B/16</strong>, the <strong>Prototype head</strong> is consistently the most reliable few-shot strategy, while the <strong>Linear head</strong> becomes competitive only in the <strong>10-shot</strong> setting.</li>
+            <li>For <strong>RN50</strong>, the best result is <strong>Prototype + 5-shot + no_aug</strong> with Accuracy = <strong>0.8806</strong> and F1 = <strong>0.8825</strong>, showing that RN50 can still perform well, but it is less stable than ViT-B/16 across different settings.</li>
+            <li>The augmentation analysis shows that <strong>data augmentation is not always beneficial</strong>. For <strong>ViT-B/16</strong>, it is mainly helpful at <strong>10-shot</strong>; for <strong>RN50</strong>, it helps the <strong>Linear head</strong> but can hurt the <strong>Prototype head</strong> in low-shot conditions.</li>
+            <li>Overall, the experiments show that the best-performing configuration for this multimodal task is <strong>ViT-B/16 with Prototype-based few-shot adaptation</strong>, while the impact of augmentation depends strongly on the backbone and adaptation method.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <footer class="shell footer">
+      <div class="panel footer-card">
+        <div class="footer-links">
+          <a href="./index.html">Assignment 1 overview</a>
+          <a href="./image.html">Image</a>
+          <a href="./text.html">Text</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
